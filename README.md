@@ -7,13 +7,13 @@ A fast file utility toolkit written in Rust.
 ### From release (recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/TVMD/fus/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/TVMD/file-utils/main/install.sh | bash
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/TVMD/fus.git
+git clone https://github.com/TVMD/file-utils.git
 cd fus
 cargo install --path .
 ```
@@ -21,7 +21,7 @@ cargo install --path .
 ### With cargo
 
 ```bash
-cargo install --git https://github.com/TVMD/fus.git
+cargo install --git https://github.com/TVMD/file-utils.git
 ```
 
 ## Commands
