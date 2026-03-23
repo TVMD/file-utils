@@ -36,6 +36,20 @@ fi
 
 DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${TAG}/${ASSET}"
 
+# Check if already installed and up to date
+CURRENT_VERSION=""
+if command -v "$BINARY" >/dev/null 2>&1; then
+    CURRENT_VERSION="$("$BINARY" --version 2>/dev/null | awk '{print $2}')"
+    LATEST_VERSION="${TAG#v}"
+    if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+        echo "fus ${CURRENT_VERSION} is already the latest version."
+        exit 0
+    fi
+    echo "Updating fus ${CURRENT_VERSION} → ${LATEST_VERSION}..."
+else
+    echo "Installing fus ${TAG#v}..."
+fi
+
 # Verify the asset exists
 HTTP_CODE="$(curl -sL -o /dev/null -w '%{http_code}' "$DOWNLOAD_URL")"
 if [ "$HTTP_CODE" != "200" ]; then
@@ -54,12 +68,12 @@ tar -xzf "${TMPDIR}/${ASSET}" -C "$TMPDIR"
 
 echo "Installing to ${INSTALL_DIR}..."
 if [ -w "$INSTALL_DIR" ]; then
-    mv "${TMPDIR}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
+    mv -f "${TMPDIR}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
 else
-    sudo mv "${TMPDIR}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
+    sudo mv -f "${TMPDIR}/${BINARY}" "${INSTALL_DIR}/${BINARY}"
 fi
 
 chmod +x "${INSTALL_DIR}/${BINARY}"
 
-echo "Installed ${BINARY} to ${INSTALL_DIR}/${BINARY}"
+echo "Installed fus ${TAG#v} to ${INSTALL_DIR}/${BINARY}"
 echo "Run 'fus --help' to get started."

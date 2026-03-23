@@ -144,7 +144,7 @@ dependencies = [
 
 [[package]]
 name = "fus"
-version = "0.1.0"
+version = "0.1.3"
 dependencies = [
  "clap",
  "sha2",
