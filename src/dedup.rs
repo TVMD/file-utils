@@ -145,9 +145,15 @@ fn find_groups(
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
-        if path.is_file() {
-            files.push(path);
+        if !path.is_file() {
+            continue;
         }
+        // Skip macOS resource fork files (._*) and hidden files (.*)
+        let name = path.file_name().unwrap_or_default().to_string_lossy();
+        if name.starts_with("._") || name.starts_with('.') {
+            continue;
+        }
+        files.push(path);
     }
 
     if files.len() < 2 {
@@ -302,23 +308,23 @@ fn parse_editor_output(
             continue;
         }
 
-        // Find the matching file
-        let path = dir.join(filename);
-        if path.exists() {
+        // Match by filename against known files (more reliable than path reconstruction)
+        if let Some(matched) = files.iter().find(|f| {
+            f.file_name()
+                .unwrap_or_default()
+                .to_string_lossy()
+                == filename
+        }) {
             entries.push(FileEntry {
-                path,
+                path: matched.clone(),
                 action,
             });
         } else {
-            // Try to match by filename against known files
-            if let Some(matched) = files.iter().find(|f| {
-                f.file_name()
-                    .unwrap_or_default()
-                    .to_string_lossy()
-                    == filename
-            }) {
+            // Fallback: try joining with dir
+            let path = dir.join(filename);
+            if path.exists() {
                 entries.push(FileEntry {
-                    path: matched.clone(),
+                    path,
                     action,
                 });
             } else {
