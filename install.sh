@@ -24,12 +24,22 @@ esac
 ASSET="${BINARY}-${OS_TAG}-${ARCH_TAG}.tar.gz"
 
 echo "Fetching latest release..."
-DOWNLOAD_URL="$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" \
-    | grep "browser_download_url.*${ASSET}" \
-    | cut -d '"' -f 4)"
+TAG="$(curl -sI "https://github.com/${REPO}/releases/latest" \
+    | grep -i '^location:' \
+    | sed 's|.*/tag/||' \
+    | tr -d '\r\n')"
 
-if [ -z "$DOWNLOAD_URL" ]; then
-    echo "Error: Could not find release asset ${ASSET}"
+if [ -z "$TAG" ]; then
+    echo "Error: Could not determine latest release tag"
+    exit 1
+fi
+
+DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${TAG}/${ASSET}"
+
+# Verify the asset exists
+HTTP_CODE="$(curl -sL -o /dev/null -w '%{http_code}' "$DOWNLOAD_URL")"
+if [ "$HTTP_CODE" != "200" ]; then
+    echo "Error: Could not find release asset ${ASSET} for ${TAG}"
     exit 1
 fi
 
