@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="ziaminhta/fus"
+REPO="TVMD/file-utils"
 BINARY="fus"
 INSTALL_DIR="/usr/local/bin"
 
