@@ -33,6 +33,10 @@ enum Commands {
         #[arg(long)]
         delete: bool,
 
+        /// Interactive mode — open editor to choose which files to keep/delete
+        #[arg(short, long)]
+        interactive: bool,
+
         /// Similarity threshold (0.0 - 1.0, default 0.8)
         #[arg(long, default_value = "0.8")]
         threshold: f64,
@@ -44,8 +48,8 @@ fn main() -> std::io::Result<()> {
 
     match cli.command {
         Commands::Dedup { dir, delete } => dedup::run(&dir, delete),
-        Commands::SmartDedup { dir, delete, threshold } => {
-            smart_dedup::run(&dir, delete, threshold)
+        Commands::SmartDedup { dir, delete, interactive, threshold } => {
+            smart_dedup::run(&dir, delete, interactive, threshold)
         }
     }
 }
