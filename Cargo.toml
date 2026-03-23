@@ -8,6 +8,5 @@ repository = "https://github.com/TVMD/file-utils"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-sha2 = "0.10"
 strsim = "0.11"
 unicode-normalization = "0.1"

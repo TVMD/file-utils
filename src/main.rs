@@ -1,5 +1,4 @@
 mod dedup;
-mod smart_dedup;
 
 use clap::{Parser, Subcommand};
 
@@ -12,19 +11,8 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Find and delete duplicate files based on content hash
-    Dedup {
-        /// Directory to scan for duplicates
-        #[arg(default_value = ".")]
-        dir: std::path::PathBuf,
-
-        /// Actually delete files (without this flag, only prints what would be deleted)
-        #[arg(long)]
-        delete: bool,
-    },
-
     /// Find and delete duplicate files based on fuzzy name matching
-    SmartDedup {
+    Dedup {
         /// Directory to scan
         #[arg(default_value = ".")]
         dir: std::path::PathBuf,
@@ -47,9 +35,8 @@ fn main() -> std::io::Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Dedup { dir, delete } => dedup::run(&dir, delete),
-        Commands::SmartDedup { dir, delete, interactive, threshold } => {
-            smart_dedup::run(&dir, delete, interactive, threshold)
+        Commands::Dedup { dir, delete, interactive, threshold } => {
+            dedup::run(&dir, delete, interactive, threshold)
         }
     }
 }
