@@ -38,6 +38,21 @@ fus dedup /path/to/folder
 fus dedup /path/to/folder --delete
 ```
 
+### `smart-dedup` — Remove duplicates by fuzzy name matching
+
+Uses AI-like fuzzy matching (Jaro-Winkler similarity) to find files with similar names — even with different casing, diacritics, or copy suffixes. Great for cleaning up music libraries, downloads folders, etc. Supports Vietnamese and other Unicode filenames.
+
+```bash
+# Dry run — shows what would be deleted
+fus smart-dedup /path/to/folder
+
+# Actually delete duplicates
+fus smart-dedup /path/to/folder --delete
+
+# Custom similarity threshold (default 0.8 = 80%)
+fus smart-dedup /path/to/folder --threshold 0.9
+```
+
 ## Release
 
 Push a version tag to trigger a GitHub Actions build for Linux and macOS (x86_64 + aarch64):
