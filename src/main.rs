@@ -3,7 +3,7 @@ mod dedup;
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "fus", about = "A collection of file utility tools")]
+#[command(name = "fus", about = "A collection of file utility tools", version)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,

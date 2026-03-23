@@ -54,7 +54,7 @@ fn format_size(bytes: u64) -> String {
 
 pub fn run(dir: &Path, delete: bool) -> io::Result<()> {
     if !dir.is_dir() {
-        eprintln!("Error: {:?} is not a directory", dir);
+        eprintln!("Error: {} is not a directory", dir.display());
         std::process::exit(1);
     }
 
@@ -81,7 +81,7 @@ pub fn run(dir: &Path, delete: bool) -> io::Result<()> {
         for path in paths {
             match hash_file(path) {
                 Ok(hash) => hash_groups.entry(hash).or_default().push(path.clone()),
-                Err(e) => eprintln!("Warning: could not read {:?}: {}", path, e),
+                Err(e) => eprintln!("Warning: could not read {}: {}", path.display(), e),
             }
         }
     }
@@ -94,8 +94,10 @@ pub fn run(dir: &Path, delete: bool) -> io::Result<()> {
         }
         // Sort: lowest copy_score first (original), then alphabetically
         paths.sort_by(|a, b| {
-            let sa = copy_score(a.file_name().unwrap().to_str().unwrap_or(""));
-            let sb = copy_score(b.file_name().unwrap().to_str().unwrap_or(""));
+            let name_a = a.file_name().unwrap_or_default().to_string_lossy();
+            let name_b = b.file_name().unwrap_or_default().to_string_lossy();
+            let sa = copy_score(&name_a);
+            let sb = copy_score(&name_b);
             sa.cmp(&sb).then_with(|| a.cmp(b))
         });
         groups.push(paths);
