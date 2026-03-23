@@ -59,7 +59,7 @@ pub fn run(dir: &Path, delete: bool) -> io::Result<()> {
     // Only hash files that share a size with at least one other file
     let mut hash_groups: HashMap<String, Vec<PathBuf>> = HashMap::new();
 
-    for (_size, paths) in &size_groups {
+    for paths in size_groups.values() {
         if paths.len() < 2 {
             continue;
         }
