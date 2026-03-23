@@ -7,13 +7,13 @@ A fast file utility toolkit written in Rust.
 ### From release (recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/ziaminhta/fus/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/TVMD/fus/main/install.sh | bash
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/ziaminhta/fus.git
+git clone https://github.com/TVMD/fus.git
 cd fus
 cargo install --path .
 ```
@@ -21,7 +21,7 @@ cargo install --path .
 ### With cargo
 
 ```bash
-cargo install --git https://github.com/ziaminhta/fus.git
+cargo install --git https://github.com/TVMD/fus.git
 ```
 
 ## Commands
