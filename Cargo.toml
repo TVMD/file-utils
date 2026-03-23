@@ -1,0 +1,11 @@
+[package]
+name = "fus"
+version = "0.1.0"
+edition = "2021"
+description = "A collection of file utility tools"
+license = "MIT"
+repository = "https://github.com/ziaminhta/fus"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+sha2 = "0.10"
