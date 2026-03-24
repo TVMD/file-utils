@@ -1,4 +1,5 @@
 mod dedup;
+mod rand;
 
 use clap::{Parser, Subcommand};
 
@@ -29,6 +30,21 @@ enum Commands {
         #[arg(long, default_value = "0.8")]
         threshold: f64,
     },
+
+    /// Randomize file order by adding number prefixes to filenames
+    Rand {
+        /// Directory to randomize
+        #[arg(default_value = ".")]
+        dir: std::path::PathBuf,
+
+        /// Preview changes without renaming
+        #[arg(long)]
+        dry_run: bool,
+
+        /// Remove number prefixes instead of randomizing
+        #[arg(long)]
+        clear: bool,
+    },
 }
 
 fn main() -> std::io::Result<()> {
@@ -37,6 +53,9 @@ fn main() -> std::io::Result<()> {
     match cli.command {
         Commands::Dedup { dir, delete, interactive, threshold } => {
             dedup::run(&dir, delete, interactive, threshold)
+        }
+        Commands::Rand { dir, dry_run, clear } => {
+            rand::run(&dir, dry_run, clear)
         }
     }
 }

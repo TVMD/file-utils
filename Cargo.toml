@@ -1,6 +1,6 @@
 [package]
 name = "fus"
-version = "0.1.9"
+version = "0.2.0"
 edition = "2021"
 description = "A collection of file utility tools"
 license = "MIT"
@@ -8,5 +8,7 @@ repository = "https://github.com/TVMD/file-utils"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
+rand = "0.10.0"
+regex = "1.12.3"
 strsim = "0.11"
 unicode-normalization = "0.1"
